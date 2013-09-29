@@ -102,7 +102,9 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     
     matches = matches.slice(0, 40); // limits results for performance
 
-    callback(matches.map(function(m) {
+    callback(matches.filter(function(m) {
+        return !m.match(/^[0-9$_]/);
+    }).map(function(m) {
         var path = Object.keys(globalWordFiles[m])[0] || "[unknown]";
         var pathParts = path.split("/");
         var foundInFile = pathParts[pathParts.length-1];
