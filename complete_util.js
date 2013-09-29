@@ -15,12 +15,12 @@ function retrievePrecedingIdentifier(text, pos, regex) {
     return buf.reverse().join("");
 }
 
-function retrieveFollowingIdentifier(text, pos, regex) {
+function retrieveFollowingIdentifier(line, pos, regex) {
     regex = regex || ID_REGEX;
     var buf = [];
-    for (var i = pos; i < text.length; i++) {
-        if (regex.test(text[i]))
-            buf.push(text[i]);
+    for (var i = pos; i < line.length; i++) {
+        if (regex.test(line[i]))
+            buf.push(line[i]);
         else
             break;
     }
