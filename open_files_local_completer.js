@@ -114,7 +114,8 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
           icon        : null,
           score       : identDict[m],
           meta        : foundInFile,
-          priority    : m.match(/^[0-9$_]/) ? -1 : 0
+          priority    : 0,
+          isGeneric   : true
         };
     }));
 };

@@ -73,6 +73,7 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
           icon        : null,
           score       : identDict[m],
           meta        : "",
+          isGeneric   : true,
           priority    : 0
         };
     }));
