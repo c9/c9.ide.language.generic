@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
 
 var baseLanguageHandler = require('plugins/c9.ide.language/base_handler');
-var completeUtil = require("./complete_util");
+var completeUtil = require("plugins/c9.ide.language/complete_util");
 
 var SPLIT_REGEX = /[^a-zA-Z_0-9\$]+/;
 
