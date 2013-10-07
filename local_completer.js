@@ -19,10 +19,11 @@ function wordDistanceAnalyzer(doc, pos, prefix) {
     var textBefore = doc.getLines(0, pos.row-1).join("\n") + "\n";
     var currentLine = doc.getLine(pos.row);
     textBefore += currentLine.substr(0, pos.column);
+    var splitRegex = getSplitRegex();
     var prefixPosition = textBefore.trim().split(SPLIT_REGEX).length - 1;
     
     // Split entire document into words
-    var identifiers = text.split(SPLIT_REGEX);
+    var identifiers = text.split(splitRegex);
     var identDict = {};
     
     // Find prefix to find other identifiers close it
@@ -41,6 +42,13 @@ function wordDistanceAnalyzer(doc, pos, prefix) {
         
     }
     return identDict;
+}
+
+function getSplitRegex() {
+    var idRegex = completer.$getIdentifierRegex();
+    if (!idRegex || !idRegex.source.match(/\[[^^][^\]]*\]/))
+        return SPLIT_REGEX;
+    return new RegExp("[^" + idRegex.source.substr(1, idRegex.source.length - 2) + "]+");
 }
 
 function analyze(doc, pos) {
