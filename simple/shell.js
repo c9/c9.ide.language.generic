@@ -9,8 +9,8 @@ handler.handlesLanguage = function(language) {
 };
 
 handler.getIdentifierRegex = function() {
-    // Allow slashes for paths, dots, dashes, no dollars
-    return (/[a-zA-Z_0-9\/\.\-]/);
+    // Allow slashes for paths, dots, dashes, tildes, no dollars
+    return (/[a-zA-Z_0-9\/\.\-\~]/);
 };
 
 handler.getCompletionRegex = function() {
