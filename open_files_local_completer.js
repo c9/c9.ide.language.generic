@@ -14,6 +14,10 @@ completer.handlesLanguage = function(language) {
     return true;
 };
 
+completer.handlesImmediate = function() {
+    return this.HANDLES_BOTH;
+};
+
 completer.getMaxFileSizeSupported = function() {
     return Infinity;
 };

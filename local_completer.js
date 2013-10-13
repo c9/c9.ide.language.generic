@@ -11,6 +11,10 @@ completer.handlesLanguage = function(language) {
     return true;
 };
 
+completer.handlesImmediate = function() {
+    return this.HANDLES_BOTH;
+};
+
 // For the current document, gives scores to identifiers not on frequency, but on distance from the current prefix
 function wordDistanceAnalyzer(doc, pos, prefix) {
     var text = doc.getValue().trim();
