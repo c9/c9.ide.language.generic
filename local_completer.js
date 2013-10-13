@@ -73,7 +73,7 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     matches = matches.slice(0, 40); // limits results for performance
 
     callback(matches.filter(function(m) {
-        return !m.match(/^[0-9$_]/) && m !== identifier;
+        return !m.match(/^[0-9$_\/]/) && m !== identifier;
     }).map(function(m) {
         return {
           name        : m,
