@@ -14,7 +14,7 @@ completer.handlesLanguage = function(language) {
     return true;
 };
 
-completer.handlesImmediate = function() {
+completer.handlesEditor = function() {
     return this.HANDLES_BOTH;
 };
 
