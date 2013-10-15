@@ -12,7 +12,7 @@ completer.handlesLanguage = function(language) {
 };
 
 completer.handlesEditor = function() {
-    return this.HANDLES_BOTH;
+    return this.HANDLES_ANY;
 };
 
 // For the current document, gives scores to identifiers not on frequency, but on distance from the current prefix

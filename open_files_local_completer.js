@@ -15,7 +15,7 @@ completer.handlesLanguage = function(language) {
 };
 
 completer.handlesEditor = function() {
-    return this.HANDLES_BOTH;
+    return this.HANDLES_ANY;
 };
 
 completer.getMaxFileSizeSupported = function() {
