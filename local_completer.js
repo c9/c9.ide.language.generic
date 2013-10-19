@@ -66,7 +66,9 @@ function analyze(doc, pos) {
 completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     var identDict = analyze(doc, pos);
     var line = doc.getLine(pos.row);
-    var identifier = completeUtil.retrievePrecedingIdentifier(line, pos.column, this.$getIdentifierRegex());
+    var regex = this.$getIdentifierRegex();
+    var identifier = completeUtil.retrievePrecedingIdentifier(line, pos.column, regex);
+    var fullIdentifier = identifier + completeUtil.retrieveFollowingIdentifier(line, pos.column, regex);
          
     var allIdentifiers = [];
     for (var ident in identDict) {
@@ -77,7 +79,8 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     matches = matches.slice(0, 40); // limits results for performance
 
     callback(matches.filter(function(m) {
-        return !m.match(/^[0-9$_\/]/) && m !== identifier;
+        return !m.match(/^[0-9$_\/]/) && m !== identifier
+            && m !== fullIdentifier;
     }).map(function(m) {
         return {
           name        : m,
