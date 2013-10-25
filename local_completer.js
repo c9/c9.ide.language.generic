@@ -20,11 +20,12 @@ function wordDistanceAnalyzer(doc, pos, prefix) {
     var text = doc.getValue().trim();
     
     // Determine cursor's word index
+    // TODO: optimize
     var textBefore = doc.getLines(0, pos.row-1).join("\n") + "\n";
     var currentLine = doc.getLine(pos.row);
     textBefore += currentLine.substr(0, pos.column);
     var splitRegex = getSplitRegex();
-    var prefixPosition = textBefore.trim().split(SPLIT_REGEX).length - 1;
+    var prefixPosition = textBefore.trim().split(splitRegex).length - 1;
     
     // Split entire document into words
     var identifiers = text.split(splitRegex);
@@ -68,7 +69,6 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     var line = doc.getLine(pos.row);
     var regex = this.$getIdentifierRegex();
     var identifier = completeUtil.retrievePrecedingIdentifier(line, pos.column, regex);
-    var fullIdentifier = identifier + completeUtil.retrieveFollowingIdentifier(line, pos.column, regex);
          
     var allIdentifiers = [];
     for (var ident in identDict) {
@@ -79,8 +79,7 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     matches = matches.slice(0, 40); // limits results for performance
 
     callback(matches.filter(function(m) {
-        return !m.match(/^[0-9$_\/]/) && m !== identifier
-            && m !== fullIdentifier;
+        return !m.match(/^[0-9$_\/]/);
     }).map(function(m) {
         return {
           name        : m,
