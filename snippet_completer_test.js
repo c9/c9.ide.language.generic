@@ -1,15 +1,14 @@
 /*global describe it before*/
 
-if (typeof process !== "undefined") {
+if (typeof define === "undefined") {
     require("amd-loader");
     require("../../test/setup_paths");
 }
 
 define(function(require, exports, module) {
-    var Document     = require("ace/document").Document;
-    var assert       = require("ace/test/assertions");
-    var completer    = require("ext/codecomplete/snippet_completer");
-    var completeUtil = require("ext/codecomplete/complete_util");
+    var Document = require("ace/document").Document;
+    var assert = require("lib/chai/chai").assert;
+    var completer = require("./snippet_completer");
     
     function matchSorter(matches) {
         matches.sort(function(a, b) {
@@ -21,12 +20,6 @@ define(function(require, exports, module) {
                 return 0;
         });
     }
-    
-    completeUtil.fetchText = function(staticPrefix, path) {
-        return require('fs').readFileSync(__dirname + "/../" 
-            + path.replace("ext/", "ext."), 'ascii');
-    };
-    
     
     describe("Snippet Completer", function(){
         it("test javascript found completions", function(done) {
@@ -40,5 +33,7 @@ define(function(require, exports, module) {
             });
         });
     });
+    
+    onload && onload();
 
 });
