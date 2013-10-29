@@ -1,14 +1,14 @@
 /*global describe it before*/
 
-if (typeof process !== "undefined") {
+if (typeof define === "undefined") {
     require("amd-loader");
     require("../../test/setup_paths");
 }
 
 define(function(require, exports, module) {
     var Document  = require("ace/document").Document;
-    var assert    = require("ace/test/assertions");
-    var completer = require("ext/codecomplete/local_completer");
+    var assert = require("lib/chai/chai").assert;
+    var completer = require("./local_completer");
 
     function matchSorter(matches) {
         matches.sort(function(a, b) {
@@ -25,7 +25,7 @@ define(function(require, exports, module) {
         return 1000000 - score;
     }
     
-    describe("Local Completer")
+    describe("Local Completer", function() {
         it("test basic completion", function(next) {
             var doc = new Document("hel hello2 hello3  hello2 abc");
             var matches = completer.complete(doc, null, {row: 0, column: 3}, null, function(matches) {
@@ -59,4 +59,6 @@ define(function(require, exports, module) {
             });
             next();
         });
+    });
+    onload && onload();
 });
