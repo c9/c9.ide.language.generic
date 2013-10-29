@@ -59,5 +59,4 @@ define(function(require, exports, module) {
             });
             next();
         });
-    });
 });
