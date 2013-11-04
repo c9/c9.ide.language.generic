@@ -80,8 +80,10 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     
     matches = matches.slice(0, 40); // limits results for performance
 
+    var isSlashRegex = regex.source.match(/^\[.*\/.*]/);
+    
     callback(matches.filter(function(m) {
-        return !m.match(/^[0-9$_\/]/);
+        return !m.match(isSlashRegex ? /^[0-9$_]/ : /^[0-9$_\/]/);
     }).map(function(m) {
         return {
           name        : m,
