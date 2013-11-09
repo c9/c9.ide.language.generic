@@ -83,7 +83,7 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     var isSlashRegex = regex.source.match(/^\[.*\/.*]/);
     
     callback(matches.filter(function(m) {
-        return !m.match(isSlashRegex ? /^[0-9$_]/ : /^[0-9$_\/]/);
+        return !m.match(isSlashRegex ? /^([0-9$_\/]|\/[^\/])/ : /^[0-9$_\/]/);
     }).map(function(m) {
         return {
           name        : m,
