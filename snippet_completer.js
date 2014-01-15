@@ -32,7 +32,7 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     if (snippets === undefined) {
         var text;
         if (this.language)
-            text = completeUtil.fetchText(this.staticPrefix || "/static", 'plugins/c9.ide.language.generic/snippets/' + this.language + '.json');
+            text = completeUtil.fetchText('plugins/c9.ide.language.generic/snippets/' + this.language + '.json');
         snippets = text ? JSON.parse(text) : {};
         // Cache
         snippetCache[this.language] = snippets;
