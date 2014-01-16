@@ -11,6 +11,8 @@ define(function(require, exports, module) {
     var Document = require("ace/document").Document;
     var assert = require("lib/chai/chai").assert;
     var completer = require("./snippet_completer");
+    var completerUtil = require("plugins/c9.ide.language/complete_util");
+    completerUtil.setStaticPrefix("/static");
     
     function matchSorter(matches) {
         matches.sort(function(a, b) {
