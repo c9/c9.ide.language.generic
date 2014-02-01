@@ -39,7 +39,7 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     if (mode === undefined) {
         var text;
         if (language)
-            text = completeUtil.fetchText('modes/' + this.language + '.json');
+            text = completeUtil.fetchText('plugins/c9.ide.language.generic/modes/' + this.language + '.json');
         mode = text ? JSON.parse(text) : {};
         // Cache
         modeCache[language] = mode;
