@@ -12,7 +12,7 @@ var baseLanguageHandler = require('plugins/c9.ide.language/base_handler');
 var completer = module.exports = Object.create(baseLanguageHandler);
 
 var modeCache = {}; // extension -> static data
-var iconLanglist = ["php"];
+var iconLanglist = ["php", "css"];
 
 completer.handlesLanguage = function(language) {
     return ["css", "php"].indexOf(language) !== -1;
@@ -56,7 +56,14 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
         var iconMap = {
             "variable": "property",
             "constant": "property",
-            "function": "method"
+            "function": "method",
+            "type": "property2",
+            "constant": "method2",
+            "color": "method2",
+            "font": "method2",
+            "function": "method2",
+            "pseudo.element": "event",
+            "pseudo.class": "event"
         };
         var subs = Object.keys(iconMap);
         for (var i = 0; i < subs.length; i++)
