@@ -16,6 +16,11 @@ completer.handlesEditor = function() {
     return this.HANDLES_ANY;
 };
 
+completer.getMaxFileSizeSupported = function() {
+    // More than our conservative default
+    return 2000000;
+};
+
 // For the current document, gives scores to identifiers not on frequency, but on distance from the current prefix
 function wordDistanceAnalyzer(doc, pos, prefix) {
     var text = doc.getValue().trim();
