@@ -18,7 +18,7 @@ completer.handlesEditor = function() {
 
 completer.getMaxFileSizeSupported = function() {
     // More than our conservative default
-    return 2000000;
+    return 1000 * 1000;
 };
 
 // For the current document, gives scores to identifiers not on frequency, but on distance from the current prefix
