@@ -7,6 +7,7 @@
 define(function(require, exports, module) {
 
 var completeUtil = require("plugins/c9.ide.language/complete_util");
+var workerUtil = require("plugins/c9.ide.language/worker_util");
 var baseLanguageHandler = require('plugins/c9.ide.language/base_handler');
 
 var completer = module.exports = Object.create(baseLanguageHandler);
@@ -22,14 +23,10 @@ completer.getMaxFileSizeSupported = function() {
     return Infinity;
 };
 
-var ID_REGEXES = {
-    "css": /[a-zA-Z_0-9-]/
-};
-
 completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     var language = this.language;
     var line = doc.getLine(pos.row);
-    var idRegex = ID_REGEXES[language];
+    var idRegex = workerUtil.getIdentifierRegex(pos);
     var identifier = completeUtil.retrievePrecedingIdentifier(line, pos.column, idRegex);
     if(!identifier.length) // No completion after "."
         return callback([]);
