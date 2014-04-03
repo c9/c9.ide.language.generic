@@ -19,7 +19,7 @@ completer.handlesEditor = function() {
 };
 
 completer.getMaxFileSizeSupported = function() {
-    return Infinity;
+    return 1000 * 1000;
 };
 
 function frequencyAnalyzer(path, text, identDict, fileDict) {

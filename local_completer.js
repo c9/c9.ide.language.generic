@@ -3,8 +3,10 @@ define(function(require, exports, module) {
 var baseLanguageHandler = require('plugins/c9.ide.language/base_handler');
 var completeUtil = require("plugins/c9.ide.language/complete_util");
 
-var SPLIT_REGEX = /[^a-zA-Z_0-9\$]+/;
+var MAX_SIZE_BYTES = 5 * 1000 * 1000;
+var DEFAULT_SPLIT_REGEX = /[^a-zA-Z_0-9\$]+/;
 var MAX_SCORE = 1000000;
+var TRUNCATE_LINES = 10000;
 
 var completer = module.exports = Object.create(baseLanguageHandler);
     
@@ -18,29 +20,29 @@ completer.handlesEditor = function() {
 
 completer.getMaxFileSizeSupported = function() {
     // More than our conservative default
-    return 1000 * 1000;
+    return MAX_SIZE_BYTES;
 };
 
 // For the current document, gives scores to identifiers not on frequency, but on distance from the current prefix
-function wordDistanceAnalyzer(doc, pos, prefix) {
-    var text = doc.getValue().trim();
-    
-    // Determine cursor's word index
-    // TODO: optimize
-    var textBefore = doc.getLines(0, pos.row-1).join("\n") + "\n";
-    var currentLine = doc.getLine(pos.row);
-    textBefore += currentLine.substr(0, pos.column);
+function wordDistanceAnalyzer(doc, pos, prefix, suffix) {
     var splitRegex = getSplitRegex();
-    var prefixPosition = textBefore.trim().split(splitRegex).length - 1;
     
+    // Get the current document text, skipping the current word
+    var linesBefore = doc.getLines(Math.max(0, pos.row - TRUNCATE_LINES/2), pos.row - 1);
+    var linesAfter = doc.getLines(pos.row - 1, Math.min(doc.length, pos.row + TRUNCATE_LINES/2));
+    var textBefore = linesBefore.join("\n");
+    var textAfter = linesAfter.join("\n");
+    var line = getFilteredLine(doc.getLine(pos.row), pos.column, prefix, suffix);
+
     // Split entire document into words
-    var identifiers = text.split(splitRegex);
-    var identDict = {};
+    var identifiers = textBefore.split(splitRegex);
+    var prefixPosition = identifiers.length;
+    identifiers.push(line.split(splitRegex));
+    identifiers.push(textAfter.split(splitRegex));
     
     // Find prefix to find other identifiers close it
+    var identDict = {};
     for (var i = 0; i < identifiers.length; i++) {
-        if (i === prefixPosition)
-            continue;
         var ident = identifiers[i];
         if (ident.length === 0)
             continue;
@@ -58,16 +60,20 @@ function wordDistanceAnalyzer(doc, pos, prefix) {
 function getSplitRegex() {
     var idRegex = completer.$getIdentifierRegex();
     if (!idRegex || !idRegex.source.match(/\[[^^][^\]]*\]/))
-        return SPLIT_REGEX;
+        return DEFAULT_SPLIT_REGEX;
     return new RegExp("[^" + idRegex.source.substr(1, idRegex.source.length - 2) + "]+");
+}
+
+function getFilteredLine(line, column, prefix, suffix) {
+    return line.substr(0, column - prefix.length)
+        + line.substr(column + suffix.length);
 }
 
 function analyze(doc, pos) {
     var line = doc.getLine(pos.row);
-    var identifier = completeUtil.retrievePrecedingIdentifier(line, pos.column, completer.$getIdentifierRegex());
-         
-    var analysisCache = wordDistanceAnalyzer(doc, pos, identifier);
-    return analysisCache;
+    var prefix = completeUtil.retrievePrecedingIdentifier(line, pos.column, completer.$getIdentifierRegex());
+    var suffix = completeUtil.retrieveFollowingIdentifier(line, pos.column, completer.$getIdentifierRegex());
+    return wordDistanceAnalyzer(doc, pos, prefix, suffix);
 }
     
 completer.complete = function(doc, fullAst, pos, currentNode, callback) {
