@@ -41,7 +41,7 @@ function wordDistanceAnalyzer(doc, pos, prefix, suffix) {
     identifiers.push(textAfter.split(splitRegex));
     
     // Find prefix to find other identifiers close it
-    var identDict = {};
+    var identDict = Object.create(null);
     for (var i = 0; i < identifiers.length; i++) {
         var ident = identifiers[i];
         if (ident.length === 0)
