@@ -7,6 +7,8 @@ var baseLanguageHandler = require('plugins/c9.ide.language/base_handler');
 var analysisCache = {}; // path => {identifier: 3, ...}
 var globalWordIndex = {}; // word => frequency
 var globalWordFiles = {}; // word => [path]
+var precachedPath;
+var precachedDoc;
 
 var completer = module.exports = Object.create(baseLanguageHandler);
 
@@ -79,12 +81,19 @@ completer.onDocumentOpen = function(path, doc, oldPath, callback) {
     
 completer.onDocumentClose = function(path, callback) {
     removeDocumentFromCache(path);
+    if (path == precachedPath)
+        precachedDoc = null;
     callback();
 };
 
-completer.onUpdate = function(doc, callback) {
-    removeDocumentFromCache(this.path);
-    analyzeDocument(this.path, doc.getValue());
+completer.analyze = function(doc, ast, callback, minimalAnalysis) {
+    if (precachedDoc && this.path !== precachedPath) {
+        removeDocumentFromCache(precachedPath);
+        analyzeDocument(precachedPath, precachedDoc);
+        precachedDoc = null;
+    }
+    precachedPath = this.path;
+    precachedDoc = doc;
     callback();
 };
 
