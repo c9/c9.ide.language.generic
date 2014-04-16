@@ -11,6 +11,7 @@ define(function(require, exports, module) {
 
     function main(options, imports, register) {
         var language = imports.language;
+        var snippets = require("./snippet_loader");
 
         language.registerLanguageHandler('plugins/c9.ide.language.generic/local_completer');
         language.registerLanguageHandler('plugins/c9.ide.language.generic/snippet_completer');
@@ -18,6 +19,10 @@ define(function(require, exports, module) {
         language.registerLanguageHandler('plugins/c9.ide.language.generic/open_files_local_completer');
         language.registerLanguageHandler('plugins/c9.ide.language.generic/simple/shell');
         language.registerLanguageHandler('plugins/c9.ide.language.generic/simple/make');
+
+        language.on("initWorker", function(e) {
+            snippets.init(e.worker);
+        });
         
         register(null, {});
     }
