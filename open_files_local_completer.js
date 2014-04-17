@@ -113,7 +113,7 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
         return !globalWordFiles[m][currentPath];
     });
     
-    matches = matches.slice(0, 40); // limits results for performance
+    matches = matches.slice(0, 100); // limits results for performance
 
     callback(matches.filter(function(m) {
         return !m.match(/^[0-9$_\/]/);

@@ -89,7 +89,7 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     }
     var matches = completeUtil.findCompletions(identifier, allIdentifiers);
     
-    matches = matches.slice(0, 40); // limits results for performance
+    matches = matches.slice(0, 100); // limits results for performance
 
     var isSlashRegex = regex.source.match(/^\[.*\/.*]/);
     
