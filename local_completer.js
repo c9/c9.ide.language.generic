@@ -37,8 +37,7 @@ function wordDistanceAnalyzer(doc, pos, prefix, suffix) {
     // Split entire document into words
     var identifiers = textBefore.split(splitRegex);
     var prefixPosition = identifiers.length;
-    identifiers.push(line.split(splitRegex));
-    identifiers.push(textAfter.split(splitRegex));
+    identifiers.concat(line.split(splitRegex), textAfter.split(splitRegex));
     
     // Find prefix to find other identifiers close it
     var identDict = Object.create(null);
@@ -48,7 +47,7 @@ function wordDistanceAnalyzer(doc, pos, prefix, suffix) {
             continue;
         var distance = Math.max(prefixPosition, i) - Math.min(prefixPosition, i);
         // Score substracted from 100000 to force descending ordering
-        if (Object.prototype.hasOwnProperty.call(identDict, ident))
+        if (identDict[ident])
             identDict[ident] = Math.max(MAX_SCORE - distance, identDict[ident]);
         else
             identDict[ident] = MAX_SCORE - distance;
