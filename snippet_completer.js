@@ -14,7 +14,7 @@ var completer = module.exports = Object.create(baseLanguageHandler);
 var snippetCache = {}; // extension -> snippets
     
 completer.handlesLanguage = function(language) {
-    return language === "javascript";
+    return snippetCache[language] || snippetCache._;
 };
 
 completer.getMaxFileSizeSupported = function() {
@@ -29,28 +29,28 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
 
     var snippets = snippetCache[this.language];
     
-    if (snippets === undefined) {
-        var text;
-        if (this.language)
-            text = completeUtil.fetchText('plugins/c9.ide.language.generic/snippets/' + this.language + '.json');
-        snippets = text ? JSON.parse(text) : {};
-        // Cache
-        snippetCache[this.language] = snippets;
-    }
-    
     var allIdentifiers = Object.keys(snippets);
     
     var matches = completeUtil.findCompletions(identifier, allIdentifiers);
     callback(matches.map(function(m) {
+        var snippet = snippets[m];
         return {
-          name        : m,
-          replaceText : snippets[m],
-          doc         : "<pre>" + snippets[m].replace("\^\^", "&#9251;") + "</pre>",
-          icon        : "property2",
-          meta        : "snippet",
-          priority    : 2
+            name        : snippet.name,
+            snippet     : snippet.content,
+            replaceText : snippet.name,
+            doc         : "<pre>" + snippet.content + "</pre>",
+            icon        : "property2",
+            meta        : "snippet",
+            priority    : 0 // todo change this back to 2 once snippets are cleaned up
         };
     }));
+};
+
+completer.init = function(callback) {
+    this.sender.on("loadSnippets", function(e) {
+        snippetCache[e.data.language] = e.data.snippets;
+    });
+    callback();
 };
 
 });
