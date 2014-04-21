@@ -29,6 +29,10 @@ define(function(require, exports, module) {
         it("test javascript found completions", function(done) {
             var doc = new Document("while(true) {\n    fn\n}");
             completer.language = 'javascript';
+            completer.sender._emit("loadSnippets", {data: {
+                language: "javascript",
+                snippets: {fn: {name: "fn"}, fun: {name: "fun"}, for: {name: "for"}}
+            }});
             completer.complete(doc, null, {row: 1, column: 6}, null, function(matches) {
                 matchSorter(matches);
                 assert.equal(matches.length, 1);
