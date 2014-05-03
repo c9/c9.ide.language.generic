@@ -102,7 +102,8 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
           score: m === fullIdentifier ? MAX_SCORE : identDict[m],
           meta: "",
           isGeneric: true,
-          priority: 0
+          priority: 0,
+          $source: "local"
         };
     }));
 };
