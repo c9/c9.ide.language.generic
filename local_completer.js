@@ -29,7 +29,7 @@ function wordDistanceAnalyzer(doc, pos, prefix, suffix) {
     
     // Get the current document text, skipping the current word
     var linesBefore = doc.getLines(Math.max(0, pos.row - TRUNCATE_LINES/2), pos.row - 1);
-    var linesAfter = doc.getLines(pos.row - 1, Math.min(doc.length, pos.row + TRUNCATE_LINES/2));
+    var linesAfter = doc.getLines(pos.row + 1, Math.min(doc.getLength(), pos.row + TRUNCATE_LINES/2));
     var textBefore = linesBefore.join("\n");
     var textAfter = linesAfter.join("\n");
     var line = getFilteredLine(doc.getLine(pos.row), pos.column, prefix, suffix);
