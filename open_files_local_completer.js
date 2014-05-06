@@ -122,13 +122,13 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
         var pathParts = path.split("/");
         var foundInFile = pathParts[pathParts.length-1];
         return {
-          name        : m,
-          replaceText : m,
-          icon        : null,
-          score       : identDict[m],
-          meta        : foundInFile,
-          priority    : 0,
-          isGeneric   : true
+          name: m,
+          replaceText: m,
+          icon: null,
+          score: identDict[m],
+          meta: foundInFile,
+          priority: 0,
+          isGeneric: true
         };
     }));
 };

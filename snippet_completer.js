@@ -35,13 +35,13 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     callback(matches.map(function(m) {
         var snippet = snippets[m];
         return {
-            name        : snippet.name,
-            snippet     : snippet.content,
-            replaceText : snippet.name,
-            doc         : "<pre>" + snippet.content + "</pre>",
-            icon        : "property2",
-            meta        : "snippet",
-            priority    : 0 // todo change this back to 2 once snippets are cleaned up
+            name: snippet.name,
+            snippet: snippet.content,
+            replaceText: snippet.name,
+            doc: "<pre>" + snippet.content + "</pre>",
+            icon: "property2",
+            meta: "snippet",
+            priority: 0 // todo change this back to 2 once snippets are cleaned up
         };
     }));
 };

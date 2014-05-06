@@ -96,13 +96,13 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
         return !m.match(isSlashRegex ? /^([0-9$_\/]|\/[^\/])/ : /^[0-9$_\/]/);
     }).map(function(m) {
         return {
-          name        : m,
-          replaceText : m,
-          icon        : null,
-          score       : m === fullIdentifier ? MAX_SCORE : identDict[m],
-          meta        : "",
-          isGeneric   : true,
-          priority    : 0
+          name: m,
+          replaceText: m,
+          icon: null,
+          score: m === fullIdentifier ? MAX_SCORE : identDict[m],
+          meta: "",
+          isGeneric: true,
+          priority: 0
         };
     }));
 };

@@ -8,7 +8,7 @@ if (typeof define === "undefined") {
 }
 
 define(function(require, exports, module) {
-    var Document  = require("ace/document").Document;
+    var Document = require("ace/document").Document;
     var assert = require("lib/chai/chai").assert;
     var completer = require("./local_completer");
 
