@@ -37,7 +37,7 @@ function wordDistanceAnalyzer(doc, pos, prefix, suffix) {
     // Split entire document into words
     var identifiers = textBefore.split(splitRegex);
     var prefixPosition = identifiers.length;
-    identifiers.concat(line.split(splitRegex), textAfter.split(splitRegex));
+    identifiers = identifiers.concat(line.split(splitRegex), textAfter.split(splitRegex));
     
     // Find prefix to find other identifiers close it
     var identDict = Object.create(null);
@@ -90,7 +90,7 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     
     matches = matches.slice(0, 100); // limits results for performance
 
-    var isSlashRegex = regex.source.match(/^\[.*\/.*]/);
+    var isSlashRegex = regex && regex.source.match(/^\[.*\/.*]/);
     
     callback(matches.filter(function(m) {
         return !m.match(isSlashRegex ? /^([0-9$_\/]|\/[^\/])/ : /^[0-9$_\/]/);

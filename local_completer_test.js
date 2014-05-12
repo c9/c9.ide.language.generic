@@ -3,6 +3,7 @@
 "use client";
 
 if (typeof define === "undefined") {
+    require("c9/inline-mocha")(module);
     require("amd-loader");
     require("../../test/setup_paths");
 }
@@ -11,7 +12,7 @@ define(function(require, exports, module) {
     var Document = require("ace/document").Document;
     var assert = require("lib/chai/chai").assert;
     var completer = require("./local_completer");
-
+    
     function matchSorter(matches) {
         matches.sort(function(a, b) {
             if (a.score < b.score)
@@ -30,9 +31,9 @@ define(function(require, exports, module) {
     describe("Local Completer", function() {
         it("test basic completion", function(next) {
             var doc = new Document("hel hello2 hello3  hello2 abc");
-            var matches = completer.complete(doc, null, {row: 0, column: 3}, null, function(matches) {
+            completer.complete(doc, null, {row: 0, column: 3}, null, function(matches) {
                 matchSorter(matches);
-                console.log("Matches:", matches);
+                // console.log("Matches:", matches);
                 assert.equal(matches.length, 2);
                 assert.equal(matches[0].name, "hello2");
                 assert.equal(determineDistance(matches[0].score), 1);
@@ -55,9 +56,32 @@ define(function(require, exports, module) {
                 matchSorter(matches);
                 assert.equal(matches.length, 2);
                 assert.equal(matches[0].name, "matches");
-                assert.equal(determineDistance(matches[0].score), 3);
+                assert.equal(determineDistance(matches[0].score), 2);
                 assert.equal(matches[1].name, "matchers");
-                assert.equal(determineDistance(matches[1].score), 11);
+                assert.equal(determineDistance(matches[1].score), 7);
+            });
+            next();
+        });
+    
+        it("should handle multiline documents", function(next) {
+            var doc = new Document("foo0 far0 faz0\nfoo1 fa faz1\nfoo2 far2 faz2");
+            completer.complete(doc, null, {row: 1, column: 6}, null, function(matches) { // f|
+                matchSorter(matches);
+                assert.equal(matches.length, 8);
+                assert.equal(matches[0].name, "foo1");
+                assert.equal(determineDistance(matches[0].score), 0);
+                assert.equal(determineDistance(matches[1].score), 1);
+            });
+    
+            completer.complete(doc, null, {row: 1, column: 7}, null, function(matches) {  // fa|
+                matchSorter(matches);
+                assert.equal(matches.length, 5);
+                assert.equal(matches[0].name, "faz0");
+                assert.equal(determineDistance(matches[0].score), 1);
+                assert.equal(matches[1].name, "faz1");
+                assert.equal(determineDistance(matches[1].score), 1);
+                assert.equal(matches[2].name, "far0");
+                assert.equal(determineDistance(matches[2].score), 2);
             });
             next();
         });
