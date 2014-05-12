@@ -20,7 +20,7 @@ define(function(require, exports, module) {
         language.registerLanguageHandler('plugins/c9.ide.language.generic/simple/shell');
         language.registerLanguageHandler('plugins/c9.ide.language.generic/simple/make');
 
-        language.on("initWorker", function(e) {
+        language.once("initWorker", function(e) {
             snippets.init(e.worker);
         });
         
