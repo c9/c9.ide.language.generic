@@ -26,7 +26,8 @@ exports.init = function(worker) {
         config.loadModule(snippetFilePath, function(m) {
             if (m) {
                 snippetManager.files[id] = m;
-                m.snippets = snippetManager.parseSnippetFile(m.snippetText);
+                if (m.snippetText)
+                    m.snippets = snippetManager.parseSnippetFile(m.snippetText);
                 snippetManager.register(m.snippets, m.scope);
                 if (m.includeScopes) {
                     snippetManager.snippetMap[m.scope].includeScopes = m.includeScopes;
