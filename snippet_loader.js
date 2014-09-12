@@ -18,7 +18,7 @@ exports.init = function(worker) {
             mode.modes.forEach(loadSnippetsForMode);
     };
 
-    var loadSnippetFile = function(id) {
+    function loadSnippetFile(id) {
         if (!id || snippetManager.files[id])
             return;
         var snippetFilePath = id.replace("mode", "snippets");
@@ -37,17 +37,23 @@ exports.init = function(worker) {
                 }
             }
         });
-    };
+    }
     
-    worker.on("changeMode", function(e) {
-        loadSnippetsForMode(worker.$doc.$mode);
-    });
-    snippetManager.on("registerSnippets", function(e) {
+    function sendSnippetsToWorker(e) {
         worker.emit("loadSnippets", {data : {
             language: e.scope,
             snippets: snippetManager.snippetNameMap[e.scope]
         }});
+    }
+    
+    worker.on("changeMode", function(e) {
+        loadSnippetsForMode(worker.$doc.$mode);
     });
+    
+    worker.on("terminate", function() {
+        snippetManager.off("registerSnippets", sendSnippetsToWorker);
+    });
+    snippetManager.on("registerSnippets", sendSnippetsToWorker);
 };
 
 });
