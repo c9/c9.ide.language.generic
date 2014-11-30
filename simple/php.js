@@ -9,7 +9,8 @@ handler.handlesLanguage = function(language) {
 };
 
 handler.getIdentifierRegex = function() {
-    return (/[$a-zA-Z0-9_\x7f-\xff]/);
+    // Note: $$ indicates dollars are allowed at the start of variables
+    return (/[$$a-zA-Z0-9_\x7f-\xff]/);
 };
 
 handler.getCompletionRegex = function() {

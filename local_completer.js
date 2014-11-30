@@ -90,10 +90,16 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     
     matches = matches.slice(0, 100); // limits results for performance
 
-    var isSlashRegex = regex && regex.source.match(/^\[.*\/.*]/);
+    var allowSlashes = regex && regex.source.match(/^\[.*\/.*]/);
+    var allowDollars = regex && regex.source.match(/\$\$/);
     
     callback(matches.filter(function(m) {
-        return !m.match(isSlashRegex ? /^([0-9$_\/]|\/[^\/])/ : /^[0-9$_\/]/);
+        if (allowDollars) {
+            return !m.match(allowSlashes ? /^([0-9_\/]|\/[^\/])/ : /^[0-9_\/]/);
+        }  
+        else {
+            return !m.match(allowSlashes ? /^([0-9$_\/]|\/[^\/])/ : /^[0-9$_\/]/);
+        }
     }).map(function(m) {
         return {
           name: m,
