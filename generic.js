@@ -18,6 +18,7 @@ define(function(require, exports, module) {
         language.registerLanguageHandler("plugins/c9.ide.language.generic/mode_completer");
         language.registerLanguageHandler('plugins/c9.ide.language.generic/open_files_local_completer');
         language.registerLanguageHandler('plugins/c9.ide.language.generic/simple/shell');
+        language.registerLanguageHandler('plugins/c9.ide.language.generic/simple/php');
         language.registerLanguageHandler('plugins/c9.ide.language.generic/simple/make');
 
         language.once("initWorker", function(e) {
