@@ -25,7 +25,7 @@ completer.getMaxFileSizeSupported = function() {
 
 // For the current document, gives scores to identifiers not on frequency, but on distance from the current prefix
 function wordDistanceAnalyzer(doc, pos, prefix, suffix) {
-    var splitRegex = getSplitRegex();
+    var splitRegex = getSplitRegex(pos);
     
     // Get the current document text, skipping the current word
     var linesBefore = doc.getLines(Math.max(0, pos.row - TRUNCATE_LINES/2), pos.row - 1);
@@ -56,8 +56,8 @@ function wordDistanceAnalyzer(doc, pos, prefix, suffix) {
     return identDict;
 }
 
-function getSplitRegex() {
-    var idRegex = completer.$getIdentifierRegex();
+function getSplitRegex(pos) {
+    var idRegex = completer.$getIdentifierRegex(pos);
     if (!idRegex || !idRegex.source.match(/\[[^^][^\]]*\]/))
         return DEFAULT_SPLIT_REGEX;
     return new RegExp("[^" + idRegex.source.substr(1, idRegex.source.length - 2) + "]+");
@@ -78,7 +78,7 @@ function analyze(doc, pos) {
 completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     var identDict = analyze(doc, pos);
     var line = doc.getLine(pos.row);
-    var regex = this.$getIdentifierRegex();
+    var regex = this.$getIdentifierRegex(pos);
     var identifier = completeUtil.retrievePrecedingIdentifier(line, pos.column, regex);
     var fullIdentifier = identifier + completeUtil.retrieveFollowingIdentifier(line, pos.column, regex);
          
