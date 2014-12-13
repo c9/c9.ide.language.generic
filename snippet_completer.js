@@ -39,7 +39,7 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
             snippet: snippet.content,
             replaceText: snippet.name,
             doc: "<pre>" + snippet.content + "</pre>",
-            icon: "property2",
+            icon: "package",
             meta: "snippet",
             priority: 0 // todo change this back to 2 once snippets are cleaned up
         };
