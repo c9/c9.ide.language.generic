@@ -1,7 +1,7 @@
 /**
  * Code completion for the Cloud9
  *
- * @copyright 2010, Ajax.org B.V.
+ * @copyright 2013, Ajax.org B.V.
  */
 define(function(require, exports, module) {
     main.consumes = ["language"];
