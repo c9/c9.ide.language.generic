@@ -20,7 +20,7 @@ exports.init = function(worker) {
     function loadSnippetFile(id) {
         if (!id || snippetManager.files[id])
             return;
-        var snippetFilePath = id.replace("mode", "snippets");
+        var snippetFilePath = id.replace(/\/modes?\//, /snippets/);
         snippetManager.files[id] = {};
         config.loadModule(snippetFilePath, function(m) {
             if (m) {
