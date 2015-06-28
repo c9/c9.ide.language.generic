@@ -13,6 +13,7 @@ var completer = module.exports = Object.create(baseLanguageHandler);
 var snippetCache = {}; // extension -> snippets
     
 completer.handlesLanguage = function(language) {
+    language = language && language.slice(language.lastIndexOf("/") + 1);
     return snippetCache[language] || snippetCache._;
 };
 
@@ -25,10 +26,11 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     var identifier = completeUtil.retrievePrecedingIdentifier(line, pos.column, completer.$getIdentifierRegex());
     if (line[pos.column - identifier.length - 1] === '.') // No snippet completion after "."
         return callback([]);
-
-    var snippets = snippetCache[this.language];
     
-    var allIdentifiers = Object.keys(snippets);
+    var language = this.language && this.language.slice(this.language.lastIndexOf("/") + 1);
+    var snippets = snippetCache[language];
+    
+    var allIdentifiers = Object.keys(snippets || {});
     
     var matches = completeUtil.findCompletions(identifier, allIdentifiers);
     callback(matches.map(function(m) {
