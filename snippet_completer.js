@@ -42,6 +42,7 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
             doc: "<pre>" + snippet.content + "</pre>",
             icon: "package",
             meta: "snippet",
+            isGeneric: true,
             priority: 0 // todo change this back to 2 once snippets are cleaned up
         };
     }));
