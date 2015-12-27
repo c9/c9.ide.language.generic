@@ -75,7 +75,7 @@ function analyze(doc, pos) {
     return wordDistanceAnalyzer(doc, pos, prefix, suffix);
 }
     
-completer.complete = function(doc, fullAst, pos, currentNode, callback) {
+completer.complete = function(doc, fullAst, pos, options, callback) {
     var identDict = analyze(doc, pos);
     var line = doc.getLine(pos.row);
     var regex = this.$getIdentifierRegex(pos);
