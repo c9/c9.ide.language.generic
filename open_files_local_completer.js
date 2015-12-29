@@ -86,7 +86,7 @@ completer.onDocumentClose = function(path, callback) {
     callback();
 };
 
-completer.analyze = function(doc, ast, callback) {
+completer.analyze = function(doc, ast, callback, minimalAnalysis) {
     if (precachedDoc && this.path !== precachedPath) {
         removeDocumentFromCache(precachedPath);
         analyzeDocument(precachedPath, precachedDoc);
@@ -97,7 +97,7 @@ completer.analyze = function(doc, ast, callback) {
     callback();
 };
 
-completer.complete = function(doc, fullAst, pos, options, callback) {
+completer.complete = function(doc, fullAst, pos, currentNode, callback) {
     var line = doc.getLine(pos.row);
     var identifier = completeUtil.retrievePrecedingIdentifier(line, pos.column, this.$getIdentifierRegex());
     var identDict = globalWordIndex;
