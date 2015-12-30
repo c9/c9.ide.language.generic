@@ -21,7 +21,7 @@ completer.getMaxFileSizeSupported = function() {
     return Infinity;
 };
 
-completer.complete = function(doc, fullAst, pos, currentNode, callback) {
+completer.complete = function(doc, fullAst, pos, options, callback) {
     var line = doc.getLine(pos.row);
     var identifier = completeUtil.retrievePrecedingIdentifier(line, pos.column, completer.$getIdentifierRegex());
     if (line[pos.column - identifier.length - 1] === '.') // No snippet completion after "."
