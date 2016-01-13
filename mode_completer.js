@@ -22,7 +22,7 @@ completer.getMaxFileSizeSupported = function() {
     return Infinity;
 };
 
-completer.complete = function(doc, fullAst, pos, currentNode, callback) {
+completer.complete = function(doc, fullAst, pos, options, callback) {
     var language = this.language;
     var line = doc.getLine(pos.row);
     var idRegex = workerUtil.getIdentifierRegex(pos);
