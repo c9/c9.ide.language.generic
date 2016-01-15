@@ -27,7 +27,7 @@ completer.complete = function(doc, fullAst, pos, options, callback) {
     var line = doc.getLine(pos.row);
     var idRegex = workerUtil.getIdentifierRegex(pos);
     var identifier = completeUtil.retrievePrecedingIdentifier(line, pos.column, idRegex);
-    if (!identifier.length) // No completion after "."
+    if (line[pos.column - 1] === ".")
         return callback([]);
 
     var mode = modeCache[language];
