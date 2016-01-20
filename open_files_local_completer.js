@@ -98,8 +98,7 @@ completer.analyze = function(doc, ast, callback) {
 };
 
 completer.complete = function(doc, fullAst, pos, options, callback) {
-    var line = doc.getLine(pos.row);
-    var identifier = completeUtil.retrievePrecedingIdentifier(line, pos.column, this.$getIdentifierRegex());
+    var identifier = options.identifierPrefix;
     var identDict = globalWordIndex;
     
     var allIdentifiers = [];
