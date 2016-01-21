@@ -98,7 +98,9 @@ completer.analyze = function(doc, ast, callback) {
 };
 
 completer.complete = function(doc, fullAst, pos, options, callback) {
-    var identifier = options.identifierPrefix;
+    var line = doc.getLine(pos.row);
+    var regex = this.$getIdentifierRegex(pos);
+    var identifier = completeUtil.retrievePrecedingIdentifier(line, pos.column, regex);
     var identDict = globalWordIndex;
     
     var allIdentifiers = [];
@@ -107,14 +109,14 @@ completer.complete = function(doc, fullAst, pos, options, callback) {
     }
     var matches = completeUtil.findCompletions(identifier, allIdentifiers);
     
-    var currentPath = this.path;
+    var currentPath = options.path;
     matches = matches.filter(function(m) {
         return !globalWordFiles[m][currentPath];
     });
     
     matches = matches.slice(0, 100); // limits results for performance
 
-    callback(matches.filter(function(m) {
+    callback(null, matches.filter(function(m) {
         return !m.match(/^[0-9$_\/]/);
     }).map(function(m) {
         var path = Object.keys(globalWordFiles[m])[0] || "[unknown]";
@@ -127,7 +129,8 @@ completer.complete = function(doc, fullAst, pos, options, callback) {
           score: identDict[m],
           meta: foundInFile,
           priority: 0,
-          isGeneric: true
+          isGeneric: true,
+          $source: "open_files",
         };
     }));
 };
