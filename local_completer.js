@@ -93,7 +93,7 @@ completer.complete = function(doc, fullAst, pos, options, callback) {
     var allowSlashes = regex && regex.source.match(/^\[.*\/.*]/);
     var allowDollars = regex && regex.source.match(/\$\$/);
     
-    callback(matches.filter(function(m) {
+    callback(null, matches.filter(function(m) {
         if (allowDollars) {
             return !m.match(allowSlashes ? /^([0-9_\/]|\/[^\/])/ : /^[0-9_\/]/);
         }  
@@ -106,7 +106,6 @@ completer.complete = function(doc, fullAst, pos, options, callback) {
           replaceText: m,
           icon: null,
           score: m === fullIdentifier ? MAX_SCORE : identDict[m],
-          meta: "",
           isGeneric: true,
           priority: 0,
           $source: "local"
