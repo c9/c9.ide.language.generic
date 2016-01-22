@@ -26,7 +26,7 @@ completer.complete = function(doc, fullAst, pos, options, callback) {
     var language = this.language;
     var line = doc.getLine(pos.row);
     var idRegex = workerUtil.getIdentifierRegex(pos);
-    var identifier = options.identifierPrefix;
+    var identifier = completeUtil.retrievePrecedingIdentifier(line, pos.column, idRegex);
     if (line[pos.column - 1] === ".")
         return callback([]);
 

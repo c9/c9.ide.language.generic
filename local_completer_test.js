@@ -31,8 +31,7 @@ define(function(require, exports, module) {
     describe("Local Completer", function() {
         it("test basic completion", function(next) {
             var doc = new Document("hel hello2 hello3  hello2 abc");
-            completer.complete(doc, null, {row: 0, column: 3}, null, function(err, matches) {
-                if (err) return next(err);
+            completer.complete(doc, null, {row: 0, column: 3}, null, function(matches) {
                 matchSorter(matches);
                 // console.log("Matches:", matches);
                 assert.equal(matches.length, 2);
@@ -46,16 +45,14 @@ define(function(require, exports, module) {
     
         it("test basic completion 2", function(next) {
             var doc = new Document("assert.equal(matchers[0].name, matches[0].score);\nassert.eq(matches[0].name, mat[0].score);\n");
-            completer.complete(doc, null, {row: 1, column: 9}, null, function(err, matches) { // .eq|
-                if (err) return next(err);
+            completer.complete(doc, null, {row: 1, column: 9}, null, function(matches) { // .eq|
                 matchSorter(matches);
                 assert.equal(matches.length, 1);
                 assert.equal(matches[0].name, "equal");
                 assert.equal(determineDistance(matches[0].score), 8);
             });
     
-            completer.complete(doc, null, {row: 1, column: 30}, null, function(err, matches) {  // .mat|[0]
-                if (err) return next(err);
+            completer.complete(doc, null, {row: 1, column: 30}, null, function(matches) {  // .mat|[0]
                 matchSorter(matches);
                 assert.equal(matches.length, 2);
                 assert.equal(matches[0].name, "matches");
@@ -68,8 +65,7 @@ define(function(require, exports, module) {
     
         it("should handle multiline documents", function(next) {
             var doc = new Document("foo0 far0 faz0\nfoo1 fa faz1\nfoo2 far2 faz2");
-            completer.complete(doc, null, {row: 1, column: 6}, null, function(err, matches) { // f|
-                if (err) return next(err);
+            completer.complete(doc, null, {row: 1, column: 6}, null, function(matches) { // f|
                 matchSorter(matches);
                 assert.equal(matches.length, 8);
                 assert.equal(matches[0].name, "foo1");
@@ -77,8 +73,7 @@ define(function(require, exports, module) {
                 assert.equal(determineDistance(matches[1].score), 1);
             });
     
-            completer.complete(doc, null, {row: 1, column: 7}, null, function(err, matches) {  // fa|
-                if (err) return next(err);
+            completer.complete(doc, null, {row: 1, column: 7}, null, function(matches) {  // fa|
                 matchSorter(matches);
                 assert.equal(matches.length, 5);
                 assert.equal(matches[0].name, "faz0");
