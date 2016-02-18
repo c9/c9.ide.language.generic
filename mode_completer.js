@@ -15,7 +15,7 @@ var modeCache = {}; // extension -> static data
 var iconLanglist = ["php", "css"];
 
 completer.handlesLanguage = function(language) {
-    return ["css", "php"].indexOf(language) !== -1;
+    return ["css"/*, "php"*/].indexOf(language) !== -1;
 };
 
 completer.getMaxFileSizeSupported = function() {
