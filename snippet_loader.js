@@ -39,7 +39,7 @@ exports.init = function(worker) {
     }
     
     function sendSnippetsToWorker(e) {
-        worker.emit("loadSnippets", {data : {
+        worker.emit("loadSnippets", { data: {
             language: e.scope,
             snippets: snippetManager.snippetNameMap[e.scope]
         }});

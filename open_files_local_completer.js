@@ -121,7 +121,7 @@ completer.complete = function(doc, fullAst, pos, options, callback) {
     }).map(function(m) {
         var path = Object.keys(globalWordFiles[m])[0] || "[unknown]";
         var pathParts = path.split("/");
-        var foundInFile = pathParts[pathParts.length-1];
+        var foundInFile = pathParts[pathParts.length - 1];
         return {
           name: m,
           replaceText: m,

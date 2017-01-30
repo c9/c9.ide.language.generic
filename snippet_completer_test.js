@@ -25,18 +25,18 @@ define(function(require, exports, module) {
         });
     }
     
-    describe("Snippet Completer", function(){
+    describe("Snippet Completer", function() {
         it("test javascript found completions", function(done) {
             var doc = new Document("while(true) {\n    fn\n}");
             completer.language = 'javascript';
             completer.sender = doc;
             completer.init(function() {
-                completer.sender._emit("loadSnippets", {data: {
+                completer.sender._emit("loadSnippets", { data: {
                     language: "javascript",
-                    snippets: {fn: {name: "fn"}, fun: {name: "fun"}, for: {name: "for"}}
+                    snippets: { fn: { name: "fn" }, fun: { name: "fun" }, for: { name: "for" }}
                 }});
             });
-            completer.complete(doc, null, {row: 1, column: 6}, null, function(matches) {
+            completer.complete(doc, null, { row: 1, column: 6 }, null, function(matches) {
                 matchSorter(matches);
                 assert.equal(matches.length, 1);
                 assert.equal(matches[0].name, "fn");
